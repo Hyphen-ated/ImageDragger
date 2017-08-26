@@ -47,8 +47,9 @@ function init() {
      stage.addChild(shape2);  
 
 
-    var image = new Image();
-    image.src = "img/google.png";
+    var image = document.createElement("img");
+    image.crossOrigin = "";
+    image.src = "http://i.imgur.com/EeK0vFk.png";
     image.onload = handleImageLoad;
     
     
@@ -60,6 +61,7 @@ function handleImageLoad(event) {
     var bitmap = new createjs.Bitmap(image);
     enableDrag(bitmap);
     bitmap.rotation = 0;
+
     stage.addChild(bitmap);
     stage.update();
 }
