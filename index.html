@@ -7,13 +7,40 @@
 </head>
 <body onload="init();">
 <div id="main">
-    <p id="header">Image Dragger</p>
-    <canvas id="canvas" width="750" height="750">
-        You need a browser with support for the canvas element to see this thing, and you aren't using one
-    </canvas>
+    <div id="field">
+        <canvas id="canvas" width="1000" height="800">
+            You need a browser with support for the canvas element to see this thing, and you aren't using one
+        </canvas>
+    </div>
+    
+    <div id="layerstuff">
+        <button class="ui-button ui-widget ui-corner-all">Add layer from file</button>
+        <button class="ui-button ui-widget ui-corner-all">Add layer from web</button>
+        <div id="layers">
+            <ul id="layerlist">
+                <li class="ui-state-default layer"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1 
+                    <label for="checkbox-nested-1" class="lockbutton">Freeze
+                    <input type="checkbox" name="checkbox-nested-1" id="checkbox-nested-1">
+                </label></li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
+                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
+            </ul>
+        </div>
+    </div>
 </div>
+<p>Drag images, left/right arrows to rotate</p>
 
-<script src="js/lib/jquery-3.2.1.min.js"></script>
-<script src="js/lib/easeljs-0.8.2.combined.js"></script>
+
+
+
+<script src="lib/jquery-3.2.1.min.js"></script>
+<script src="lib/easeljs-0.8.2.combined.js"></script>
+
+<link rel="stylesheet" href="lib/jquery-ui.min.css">
+<script src="lib/jquery-ui.min.js"></script>
 <script src="js/main.js"></script>
 </body>

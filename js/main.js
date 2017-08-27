@@ -1,3 +1,26 @@
+var stage;
+var objects = [];
+
+function init() {
+    stage = new createjs.Stage("canvas");
+
+    createImage("http://i.imgur.com/ryngzX3.png");
+    createImage("http://i.imgur.com/EeK0vFk.png");
+    createImage("img/google.png");
+    stage.update();    
+    
+    $( "#layerlist" ).sortable({placeholder: "ui-state-highlight"});
+    $( "#layerlist" ).disableSelection();
+}
+
+var createImage = function(url) {
+    var image = document.createElement("img");
+    image.crossOrigin = "";
+    image.src = url;
+    image.onload = handleImageLoad;       
+}
+
+
 var curItem;
 enableDrag = function (item) {
     item.on("mousedown", function(evt) {
@@ -16,44 +39,16 @@ enableDrag = function (item) {
 }
 
 document.onkeydown = function(e) {
-    if (e.keyCode == 37 && curItem) {
-        curItem.rotation -= 90;
-    } else if (e.keyCode == 39 && curItem) {
-        curItem.rotation += 90;
+    if(!curItem) return;
+    if (e.keyCode == 37) {
+        curItem.rotation =  (curItem.rotation - 90) % 360;        
+    } else if (e.keyCode == 39 ) {
+        curItem.rotation =  (curItem.rotation + 90) % 360;
     }
-}
-function init() {
-    stage = new createjs.Stage("canvas");
-    
-    var circle = new createjs.Shape();
-        circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
-        circle.x = 100;
-        circle.y = 100;
-        circle.rotation = 0;
-        enableDrag(circle);
-        
-    stage.addChild(circle);
-      
-      
-    shape2 = new createjs.Shape();
-     shape2.graphics.beginFill(createjs.Graphics.getRGB(255,0,0));
-     shape2.graphics.rect(0,0,100,60);
-     shape2.regX = 50;
-     shape2.regY = 30;
-     shape2.x = 200;
-     shape2.y = 200;
-     shape2.rotation = 0;
-     enableDrag(shape2);
-     stage.addChild(shape2);  
-
-
-    var image = document.createElement("img");
-    image.crossOrigin = "";
-    image.src = "http://i.imgur.com/EeK0vFk.png";
-    image.onload = handleImageLoad;
     
     
     stage.update();
+    
 }
 
 function handleImageLoad(event) {
@@ -61,6 +56,10 @@ function handleImageLoad(event) {
     var bitmap = new createjs.Bitmap(image);
     enableDrag(bitmap);
     bitmap.rotation = 0;
+    bitmap.regX = image.width/2;
+    bitmap.regY = image.height/2;
+    bitmap.x = 100;
+    bitmap.y = 100;
 
     stage.addChild(bitmap);
     stage.update();
