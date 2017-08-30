@@ -16,7 +16,6 @@ function init() {
                 var child = stage.getChildByName("bmp" + j);
                 stage.setChildIndex(child, layers.length - i - 1);
                 stage.update();
-                console.log("i set " + child.name + " to " + i + " and now it's " + stage.getChildIndex(child));
             }              
         }});
     $( "#layerlist" ).disableSelection();
@@ -42,6 +41,8 @@ function init() {
             processImageFiles(e.originalEvent.dataTransfer.files);
         }
     });
+    
+    handleHash();
 }
 
 
@@ -109,18 +110,18 @@ function handleFileInput(e) {
 }
 
 function addLayerFromWeb() {
-    createImageByUrl($("#urltext").val());
+    ++layerCount; 
+    createImageByUrl($("#urltext").val(), layerCount);
 }
 
-function createImageByUrl(url) {
-    ++layerCount;        
+function createImageByUrl(url, id) {
+           
     var img = document.createElement("img");
     img.crossOrigin = "";
     img.src = url;
     img.onload = handleImageLoad;  
-    img.id = "img" + layerCount;
-         
-    createLayer(layerCount);         
+    img.id = "img" + id;
+    createLayer(id);         
 }
 
 
@@ -179,14 +180,80 @@ function handleImageLoad(event) {
 function putBitmapOnCanvas(img) {
     var bitmap = new createjs.Bitmap(img);
     enableDrag(bitmap);
-    bitmap.rotation = 0;
+    var id = bitmap.name =  "bmp" + img.id.replace("img", "");           
+    
+    var x = 100;
+    var y = 100;
+    var rotation = 0;
+    if (id in objects) {
+        x = objects[id].x;
+        y = objects[id].y;
+        rotation = objects[id].rotation;
+    }
+    
+    bitmap.id = id;
+    bitmap.x = x;
+    bitmap.y = y;
+    bitmap.rotation = rotation;
+    
     bitmap.regX = img.width/2;
     bitmap.regY = img.height/2;
-    bitmap.x = 100;
-    bitmap.y = 100;
-    bitmap.id = bitmap.name =  "bmp" + img.id.replace("img", "");
-
+    
     stage.addChild(bitmap);
     stage.update();
 }
 
+function dumpStateToJSON() {
+    var layerdescs = [];
+    var layerlist = $("#layerlist").children();
+    for (var i = 0; i < layerlist.length; ++i) {
+        var desc = {};
+        var layer = layerlist[i];
+        var id = layer.id.replace("layer", "");
+        desc.i = id;
+        desc.n = $("#name" + id).val();
+        
+        var bmp = stage.getChildByName("bmp" + id);
+        desc.x = bmp.x;
+        desc.y = bmp.y;
+        desc.r = bmp.rotation;
+        
+        var image = bmp.image;
+        desc.u = image.src
+        
+        var freeze = $("#freeze" + id);
+        desc.f = freeze.prop("checked");
+        
+        layerdescs.push(desc);                
+    }
+    return JSON.stringify(layerdescs);
+}
+
+function doShareLink() {
+    var json = dumpStateToJSON();
+    var url = window.location.href.split('?')[0].split('#')[0] + "#" + LZString.compressToEncodedURIComponent(json);
+    $("#sharetext").val(url);
+}
+
+function loadStateFromDump(json) {
+    var layerdescs = JSON.parse(json);
+    for (var i = layerdescs.length - 1; i >= 0; --i) {
+        var desc = layerdescs[i];        
+        var id = desc.i;
+        var bmp = {};
+        bmp.x = desc.x;
+        bmp.y = desc.y;
+        bmp.rotation = desc.r;
+        objects["bmp"+id] = bmp;
+        createImageByUrl(desc.u, id);
+        $("#name" + id).val(desc.n);
+        $("#freeze"+ id).prop("checked", desc.f);
+    }
+}
+
+function handleHash() {
+    if (window.location.hash) {
+        var json = LZString.decompressFromEncodedURIComponent(window.location.hash.replace("#", ""));
+        loadStateFromDump(json);
+    }
+}
