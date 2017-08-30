@@ -124,6 +124,7 @@ function enableDrag(item) {
                        
         var $layer = $("#layer" + i);
         $layer.addClass("hilite");
+        $("#name" + i).addClass("hilite");
         item.removeAllEventListeners("pressmove");
         
         var $freeze = $("#freeze" + i);
@@ -140,7 +141,8 @@ function enableDrag(item) {
         curItem = null;
         var i = item.id.replace("bmp", "");
         var $layer = $("#layer" + i);
-        $layer.removeClass("hilite");        
+        $layer.removeClass("hilite");    
+        $("#name" + i).removeClass("hilite");
     });
     
 }
