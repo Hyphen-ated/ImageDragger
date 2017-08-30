@@ -2,9 +2,9 @@ body {
     background-color: #fafafa;
 }
 
-#layerlist { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#layerlist { list-style-type: none; margin: 0; padding: 0; }
 #layerlist li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
-#layerlist li span { position: absolute; margin-left: -1.3em; }
+#layerlist li span { margin-left: -1.3em; }
 
 #main {
     display: flex;
@@ -15,7 +15,7 @@ body {
 }
 
 #layerstuff {
-    flex-grow: 1;
+
 }
 
 #layers {
@@ -23,6 +23,8 @@ body {
 }
 
 .lockbutton {
+    flex-shrink: 0;
+    font-size: 0.8em;
 }
 
 .layer {
