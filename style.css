@@ -33,3 +33,7 @@ body {
 .is-dragover {
   background-color: lightgrey;
 }
+
+.hilite {
+    color: red !important;
+}

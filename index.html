@@ -19,7 +19,7 @@
         <button class="ui-button ui-widget ui-corner-all" onclick="createLayerFromInput()">Add layer from file</button>
         or drag an image onto this page
         <br>
-        <button class="ui-button ui-widget ui-corner-all">Add layer from web</button>
+        <button class="ui-button ui-widget ui-corner-all" onclick="addLayerFromWeb()">Add layer from web</button>
         <input type="text" name="urltext" id="urltext" placeholder="paste image url">
         <div id="layers">
             <ul id="layerlist">
@@ -35,7 +35,7 @@
                 <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>-->
             </ul>
         </div>
-        <button class="ui-button ui-widget ui-corner-all">Make share link (web layers only)</button>
+        <button class="ui-button ui-widget ui-corner-all" id="sharebutton">Make share link (web layers only)</button>
         <input type="text" id="sharetext">
     </div>
 </div>

@@ -50,11 +50,16 @@ function processImageFile(f) {
         reader.onload = (function(thefile) {
             return function(e) {
                 console.log("got there");
+                ++layerCount;                
                 var img = document.createElement('img');
                 img.src = e.target.result;  
-                putBitmapOnCanvas(img);
-                ++layerCount;
+                img.onload = handleImageLoad;
+                img.id = "img" + layerCount;
+                
                 createLayer(layerCount);
+                
+                // disable share button when using local images
+                $("#sharebutton").attr("disabled", true).addClass("ui-state-disabled");
             }
         })(f);
         reader.readAsDataURL(f);
@@ -96,29 +101,52 @@ function handleFileInput(e) {
     droppedFiles = e.target.files;
 }
 
+function addLayerFromWeb() {
+    createImageByUrl($("#urltext").val());
+}
+
 function createImageByUrl(url) {
-    var image = document.createElement("img");
-    image.crossOrigin = "";
-    image.src = url;
-    image.onload = handleImageLoad;       
+    ++layerCount;        
+    var img = document.createElement("img");
+    img.crossOrigin = "";
+    img.src = url;
+    img.onload = handleImageLoad;  
+    img.id = "img" + layerCount;
+         
+    createLayer(layerCount);         
 }
 
 
 var curItem;
+// allows dragging around easeljs objects on canvas in a non-jumpy way
 function enableDrag(item) {
     item.on("mousedown", function(evt) {
         var offset = {  x:item.x-evt.stageX,
                         y:item.y-evt.stageY};
         curItem = item;
-        item.on("pressmove", function(ev) {
-            item.x = ev.stageX+offset.x;
-            item.y = ev.stageY+offset.y;
-            stage.update();
-        });
+        var i = item.id.replace("bmp", "");
+                       
+        var $layer = $("#layer" + i);
+        $layer.addClass("hilite");
+        item.removeAllEventListeners("pressmove");
+        
+        var $freeze = $("#freeze" + i);
+        if (!($freeze.prop("checked"))) {
+            item.on("pressmove", function(ev) {
+                item.x = ev.stageX+offset.x;
+                item.y = ev.stageY+offset.y;
+                stage.update();                           
+            });
+        }
+        
     });
     item.on("pressup", function(evt) {
         curItem = null;
+        var i = item.id.replace("bmp", "");
+        var $layer = $("#layer" + i);
+        $layer.removeClass("hilite");        
     });
+    
 }
 
 document.onkeydown = function(e) {
@@ -147,6 +175,7 @@ function putBitmapOnCanvas(img) {
     bitmap.regY = img.height/2;
     bitmap.x = 100;
     bitmap.y = 100;
+    bitmap.id = bitmap.name =  "bmp" + img.id.replace("img", "");
 
     stage.addChild(bitmap);
     stage.update();
