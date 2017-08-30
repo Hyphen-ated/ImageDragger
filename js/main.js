@@ -7,8 +7,20 @@ function init() {
     stage = new createjs.Stage("canvas");
     stage.update();    
     
-    $( "#layerlist" ).sortable({placeholder: "ui-state-highlight"});
+    $( "#layerlist" ).sortable(
+        {placeholder: "ui-state-highlight",
+        update: function() {
+            var layers = $("#layerlist").sortable("toArray");
+            for(var i = layers.length - 1; i >= 0; --i) {
+                var j = layers[i].replace("layer", "");
+                var child = stage.getChildByName("bmp" + j);
+                stage.setChildIndex(child, layers.length - i - 1);
+                stage.update();
+                console.log("i set " + child.name + " to " + i + " and now it's " + stage.getChildIndex(child));
+            }              
+        }});
     $( "#layerlist" ).disableSelection();
+
     
     $("#fileinput").on("change", handleFileInput);
   
@@ -45,7 +57,6 @@ function processImageFile(f) {
         var reader = new FileReader();           
         reader.onload = (function(thefile) {
             return function(e) {
-                console.log("got there");
                 ++layerCount;                
                 var img = document.createElement('img');
                 img.src = e.target.result;  
