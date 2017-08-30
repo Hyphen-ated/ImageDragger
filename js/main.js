@@ -124,6 +124,7 @@ function enableDrag(item) {
     item.on("mousedown", function(evt) {
         var offset = {  x:item.x-evt.stageX,
                         y:item.y-evt.stageY};
+        var rotatePoint = { x:0, y:0, rotation:0};                        
         curItem = item;
         var i = item.id.replace("bmp", "");
                        
@@ -137,6 +138,16 @@ function enableDrag(item) {
             item.on("pressmove", function(ev) {
                 item.x = ev.stageX+offset.x;
                 item.y = ev.stageY+offset.y;
+                
+                if(angleMode == 1) { //they just pressed the freeform angle key, we have to remember the start point
+                    rotatePoint.x = item.x;
+                    rotatePoint.y = item.y;
+                    rotatePoint.rotation = item.rotation;
+                    angleMode = 2;
+                } else if (angleMode == 2) { //they're in the middle of freeform
+                    item.rotation = (rotatePoint.rotation + (item.x + item.y - rotatePoint.x - rotatePoint.y) / 2) % 360;
+                }
+                
                 stage.update();                           
             });
         }
@@ -152,17 +163,29 @@ function enableDrag(item) {
     
 }
 
+var angleMode = 0;
+var angleModeX = 0;
+var angleModeY = 0;
+var freeformPressed = false;
 document.onkeydown = function(e) {
     if(!curItem) return;
-    if (e.keyCode == 37) {
+    if (e.keyCode == 37) { //left
         curItem.rotation =  (curItem.rotation - 90) % 360;        
-    } else if (e.keyCode == 39 ) {
+    } else if (e.keyCode == 39 ) { //right
         curItem.rotation =  (curItem.rotation + 90) % 360;
+    } else if (e.keyCode == 17 && freeformPressed == false) { //ctrl
+        angleMode = 1;
+        freeformPressed = true;
+    } else if (e.keyCode == 16) { //shift
+        curItem.rotation = 0;
+    }        
+    stage.update();    
+}
+document.onkeyup = function(e) {
+    if(e.keyCode == 17) {
+        angleMode = 0;
+        freeformPressed = false;
     }
-    
-    
-    stage.update();
-    
 }
 
 function handleImageLoad(event) {
