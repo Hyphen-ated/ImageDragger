@@ -74,10 +74,6 @@ function processImageFile(f) {
     }   
 }
 
-function onFreezeChange(freezeid, checked) {
-    //freezeid looks like "freeze3". checked is bool
-}
-
 
 function createLayer(layernum) {    
     var text = "Layer " + layernum;
@@ -88,9 +84,6 @@ function createLayer(layernum) {
     var $label = $('<label for="freeze' + layernum + '" class="lockbutton">'+
                     'Freeze</label>');
     var $checkbox = $('<input type="checkbox" id="freeze'+ layernum +'">');
-    $checkbox.change(function() {
-        onFreezeChange(this.id, this.checked);
-    });
     $label.append($checkbox);                                                     
 
     $li.append($label);            
