@@ -5,10 +5,6 @@ var droppedFiles = false;
 
 function init() {
     stage = new createjs.Stage("canvas");
-
-//    createImageByUrl("http://i.imgur.com/ryngzX3.png");
-//    createImageByUrl("http://i.imgur.com/EeK0vFk.png");
-//    createImageByUrl("img/google.png");
     stage.update();    
     
     $( "#layerlist" ).sortable({placeholder: "ui-state-highlight"});
@@ -76,7 +72,7 @@ function createLayer(layernum) {
     var id = "layer" + layernum;
     var $li = $('<li class="ui-state-default layer" id="'+id+'">'+
                 '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>'+
-                 text + '</li>")');
+                '<input id="name'+ layernum + '" value="' + text + '"></li>")');
     var $label = $('<label for="freeze' + layernum + '" class="lockbutton">'+
                     'Freeze</label>');
     var $checkbox = $('<input type="checkbox" id="freeze'+ layernum +'">');
