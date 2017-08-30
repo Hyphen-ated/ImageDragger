@@ -3,7 +3,7 @@
 <head>
     <title>Image Dragger</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.ico">
 </head>
 <body onload="init();">
 <div id="main">
@@ -14,22 +14,29 @@
     </div>
     
     <div id="layerstuff">
-        <button class="ui-button ui-widget ui-corner-all">Add layer from file</button>
+        <input type="file" id="fileinput">
+        <br>
+        <button class="ui-button ui-widget ui-corner-all" onclick="createLayerFromInput()">Add layer from file</button>
+        or drag an image onto this page
+        <br>
         <button class="ui-button ui-widget ui-corner-all">Add layer from web</button>
+        <input type="text" name="urltext" id="urltext" placeholder="paste image url">
         <div id="layers">
             <ul id="layerlist">
-                <li class="ui-state-default layer"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1 
-                    <label for="checkbox-nested-1" class="lockbutton">Freeze
-                    <input type="checkbox" name="checkbox-nested-1" id="checkbox-nested-1">
-                </label></li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
-                <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
+                <!--<li class="ui-state-default layer"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1 -->
+                    <!--<label for="checkbox-nested-1" class="lockbutton">Freeze-->
+                    <!--<input type="checkbox" name="checkbox-nested-1" id="checkbox-nested-1">-->
+                <!--</label></li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>-->
+                <!--<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>-->
             </ul>
         </div>
+        <button class="ui-button ui-widget ui-corner-all">Make share link (web layers only)</button>
+        <input type="text" id="sharetext">
     </div>
 </div>
 <p>Drag images, left/right arrows to rotate</p>

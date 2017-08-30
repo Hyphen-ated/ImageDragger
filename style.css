@@ -1,5 +1,5 @@
 body {
-    background-color: #eeeeee;
+    background-color: #fafafa;
 }
 
 #layerlist { list-style-type: none; margin: 0; padding: 0; width: 60%; }
@@ -28,4 +28,8 @@ body {
 .layer {
     display: flex;
     justify-content: space-between;
+}
+
+.is-dragover {
+  background-color: lightgrey;
 }
